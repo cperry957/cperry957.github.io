@@ -1,0 +1,46 @@
+#margin-center {
+    text-align: center;
+}
+
+body, html {
+  background: #1d1d1d;
+  height: 100%;
+}
+
+[data-element="card"] {
+  background: #26293c; /*just for visual*/
+  height: 100%; /*just for visual*/
+  width: 100%; /* just for visual*/
+}
+
+[data-container="button"] {
+  text-align: center;
+  width: 100%;
+}
+
+button {
+  background: #673ab7;
+  border: 0;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 6px rgba(0,0,0,.6);
+    -moz-box-shadow: 0 2px 6px rgba(0,0,0,.6);
+    -o-box-shadow: 0 2px 6px rgba(0,0,0,.6);
+    box-shadow: 0 2px 6px rgba(0,0,0,.6);
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font: 400 12px/17px 'helvetica';
+    letter-spacing: 1px;
+    padding: 15px 22px 12px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all .15s ease-in-out;
+}
+
+button:hover, button:focus {
+  background: #e91e63;
+      -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.8);
+    -moz-box-shadow: 0 2px 8px rgba(0,0,0,.8);
+    -o-box-shadow: 0 2px 8px rgba(0,0,0,.8);
+    box-shadow: 0 2px 8px rgba(0,0,0,.8);
+}
