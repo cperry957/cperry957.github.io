@@ -2,6 +2,7 @@
 //import functionName from './BombTower.js'; 
 //import functionName from './FrostTower.js'; 
 
+
   var config = {
     type: Phaser.AUTO,
     parent: 'content',
@@ -25,9 +26,8 @@
   var BombTower;
   var FrostTower;
   var selectedTower = 2;
-  var enemies;
   var ENEMY_SPEED = 1/10000;
-  var BULLET_DAMAGE = 50;
+  var BULLET_DAMAGE = 15;
  
 
   var map =[[ 0,-1, 0, 0, 0, 0, 0, 0, 0],
@@ -44,8 +44,7 @@
   function preload() {    
     this.load.atlas('sprites', 'assets/spritesheet1.png', 'assets/spritesheet1.json');
     this.load.image('bullet', 'assets/bullet.png');
-	this.load.image('Arrowclick', 'assets/Arrowclick.png');
-	this.load.image('ArrowclickDown', 'assets/Arrowclick.png');
+    this.load.image('monster1', 'assets/monster1_atlas.png');
 }
 
   var Turret = new Phaser.Class({
@@ -94,18 +93,18 @@
             this.x = j * 64 + 64/2;
             map[i][j] = 1;            
         },
-		//fire: function() {
-        //    var enemy = getEnemy(this.x, this.y, 200);
-        //    if(enemy) {
-        //        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-        //        addBullet(this.x, this.y, angle);
-        //        this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-        //}
-        //},
+		fire: function() {
+            var enemy = getEnemy(this.x, this.y, 200);
+            if(enemy) {
+                var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+                addBullet(this.x, this.y, angle);
+                this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+        }
+        },
         update: function (time, delta)
         {
             if(time > this.nextTic) {
-//				this.fire();
+				this.fire();
                 this.nextTic = time + 1000;
             }
         }
@@ -124,18 +123,18 @@
             this.x = j * 64 + 64/2;
             map[i][j] = 1;            
         },
-		//fire: function() {
-        //    var enemy = getEnemy(this.x, this.y, 200);
-        //    if(enemy) {
-        //        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-        //        addBullet(this.x, this.y, angle);
-        //        this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-        //}
-       // },
+		fire: function() {
+            var enemy = getEnemy(this.x, this.y, 200);
+            if(enemy) {
+                var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+                addBullet(this.x, this.y, angle);
+                this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+        }
+        },
         update: function (time, delta)
         {
             if(time > this.nextTic) {
-//				this.fire();
+				this.fire();
                 this.nextTic = time + 1000;
             }
         }
@@ -154,18 +153,18 @@
             this.x = j * 64 + 64/2;
             map[i][j] = 1;            
         },
-		//fire: function() {
-        //    var enemy = getEnemy(this.x, this.y, 200);
-        //    if(enemy) {
-        //        var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-        //        addBullet(this.x, this.y, angle);
-        //        this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-        //}
-        //},
+		fire: function() {
+            var enemy = getEnemy(this.x, this.y, 200);
+            if(enemy) {
+                var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+                addBullet(this.x, this.y, angle);
+                this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+        }
+        },
         update: function (time, delta)
         {
             if(time > this.nextTic) {
-//				this.fire();
+				this.fire();
                 this.nextTic = time + 1000;
             }
         }
@@ -218,7 +217,7 @@
             }
         }
 
-    });
+});
   
   function create() {
     var graphics = this.add.graphics();    
@@ -231,12 +230,13 @@
     graphics.lineStyle(2, 0xffffff, 1);
     path.draw(graphics);
     
+
     
 	ArrowTower = this.add.group({ classType: Arrow, runChildUpdate: true });
 	BombTower = this.add.group({ classType: Bomb, runChildUpdate: true });
 	FrostTower = this.add.group({ classType: Frost, runChildUpdate: true });
 
-    
+    enemies = this.physics.add.group({ classType: Enemy, runChildUpdate: true });
     bullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
 
     this.nextEnemy = 0;
@@ -377,15 +377,27 @@
 }
 
   function update(time, delta) {  
+     if (time > this.nextEnemy)
+    {
+        var enemy = enemies.get();
+        if (enemy)
+        {
+            enemy.setActive(true);
+            enemy.setVisible(true);
+            enemy.startOnPath();
 
-
+            this.nextEnemy = time + 2000;
+        } 
+    }
 }
 
   function canPlaceTurret(i, j) {
     return map[i][j] === 0;
 }
 
-  function currentselectedTower(){return selectedTower;}
+  function currentselectedTower(){
+      return selectedTower;
+}
 
   function placeTurret(pointer) {
     var i = Math.floor(pointer.y/64);
@@ -433,3 +445,60 @@
     }
 }
 
+function getEnemy(x, y, distance) {
+    var enemyUnits = enemies.getChildren();
+    for(var i = 0; i < enemyUnits.length; i++) {       
+        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
+            return enemyUnits[i];
+   }
+   return false;
+} 
+ 
+  var Enemy = new Phaser.Class({
+
+        Extends: Phaser.GameObjects.Image,
+
+        initialize:
+
+        function Enemy (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0,'monster1',);
+            
+
+            this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
+            this.hp = 0;
+        },
+
+        startOnPath: function ()
+        {
+            this.follower.t = 0;
+            this.hp = 300;
+            
+            path.getPoint(this.follower.t, this.follower.vec);
+            
+            this.setPosition(this.follower.vec.x, this.follower.vec.y);            
+        },
+        receiveDamage: function(damage) {
+            this.hp -= damage;           
+            
+            // if hp drops below 0 we deactivate this enemy
+            if(this.hp <= 0) {
+                this.setActive(false);
+                this.setVisible(false);      
+            }
+        },
+        update: function (time, delta)
+        {
+            this.follower.t += ENEMY_SPEED * delta;
+            path.getPoint(this.follower.t, this.follower.vec);
+            
+            this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+            if (this.follower.t >= 1)
+            {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+
+});
