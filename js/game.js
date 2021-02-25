@@ -1,13 +1,8 @@
-//import functionName from './ArrowTower.js';  
-//import functionName from './BombTower.js'; 
-//import functionName from './FrostTower.js'; 
-
-
   var config = {
     type: Phaser.AUTO,
     parent: 'content',
-    width: 640,
-    height: 512,
+    width: 800,
+    height: 600,
     physics: {
         default: 'arcade'
     },
@@ -25,201 +20,42 @@
   var ArrowTower;
   var BombTower;
   var FrostTower;
-  var selectedTower = 2;
+  var selectedTower = 	1;
   var ENEMY_SPEED = 1/10000;
-  var BULLET_DAMAGE = 15;
- 
+  var ENEMY_SPEED_SLOWED = 1/90000;
+  var BULLET_DAMAGE = 10;
+  var ICE_BULLET_DAMAGE = 100;
+  var BOMB_BULLET_DAMAGE = 1;
+  var BOMB_BULLET_DAMAGE_EXPLOSION = 10000;
+  var ArrowTowerUpgrade = 1;
+  var BombTowerUpgrade = 1;
+  var FrostTowerUpgrade = 1;
+  var currentGold = 500;
 
   var map =[[ 0,-1, 0, 0, 0, 0, 0, 0, 0],
             [ 0,-1, 0, 0, 0, 0, 0, 0, 0],
             [ 0,-1,-1,-1,-1,-1,-1,-1, 0],
-            [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-            [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-            [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-            [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-	    [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-	    [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
+            [ 0, 0, 0, 0, 0, 0, 0,-1, 0],
+            [ 0, 0, 0, 0, 0, 0, 0,-1, 0],
+            [ 0, 0, 0, 0, 0, 0, 0,-1, 0],
+            [ 0, 0, 0, 0, 0, 0, 0,-1, 0],
+			[ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
+			[ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
             [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0]];
 
   function preload() {    
     this.load.atlas('sprites', 'assets/spritesheet1.png', 'assets/spritesheet1.json');
     this.load.image('bullet', 'assets/bullet.png');
+	this.load.image('bomb', 'assets/bomb.png');
     this.load.image('monster1', 'assets/monster1_atlas.png');
+	this.load.image('BombExplosion', 'BombExplosion.png');
+	this.load.image('ArrowTowerUpgrade', 'assets/ArrowTowerUpgrade.png');
+	this.load.image('BombTowerUpgrade', 'assets/BombTowerUpgrade.png');
+	this.load.image('FrostTowerUpgrade', 'assets/FrostTowerUpgrade.png');
+	this.load.image('BombExplosion', 'assets/BombExplosion.png');
 }
 
-  var Turret = new Phaser.Class({
-
-        Extends: Phaser.GameObjects.Image,
-
-        initialize:
-
-        function Turret (scene)
-        {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
-            this.nextTic = 0;
-        },
-        place: function(i, j) {            
-            this.y = i * 64 + 64/2;
-            this.x = j * 64 + 64/2;
-            map[i][j] = 1;            
-        },
-        fire: function() {
-            var enemy = getEnemy(this.x, this.y, 200);
-            if(enemy) {
-                var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-                addBullet(this.x, this.y, angle);
-                this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-            }
-        },
-        update: function (time, delta)
-        {
-            if(time > this.nextTic) {
-                this.fire();
-                this.nextTic = time + 1000;
-            }
-        }
-});
-
-  var Arrow = new Phaser.Class({
-        Extends: Phaser.GameObjects.Image,
-        initialize:
-        function Arrow (scene)
-        {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'ArrowTower');
-            this.nextTic = 0;
-        },
-        place: function(i, j) {            
-            this.y = i * 64 + 64/2;
-            this.x = j * 64 + 64/2;
-            map[i][j] = 1;            
-        },
-		fire: function() {
-            var enemy = getEnemy(this.x, this.y, 200);
-            if(enemy) {
-                var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-                addBullet(this.x, this.y, angle);
-                this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-        }
-        },
-        update: function (time, delta)
-        {
-            if(time > this.nextTic) {
-				this.fire();
-                this.nextTic = time + 1000;
-            }
-        }
-});
-
-  var Bomb = new Phaser.Class({
-        Extends: Phaser.GameObjects.Image,
-        initialize:
-        function Bomb (scene)
-        {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'BombTower');
-            this.nextTic = 0;
-        },
-        place: function(i, j) {            
-            this.y = i * 64 + 64/2;
-            this.x = j * 64 + 64/2;
-            map[i][j] = 1;            
-        },
-		fire: function() {
-            var enemy = getEnemy(this.x, this.y, 200);
-            if(enemy) {
-                var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-                addBullet(this.x, this.y, angle);
-                this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-        }
-        },
-        update: function (time, delta)
-        {
-            if(time > this.nextTic) {
-				this.fire();
-                this.nextTic = time + 1000;
-            }
-        }
-});
-
-  var Frost = new Phaser.Class({
-        Extends: Phaser.GameObjects.Image,
-        initialize:
-        function Frost (scene)
-        {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'FrostTower');
-            this.nextTic = 0;
-        },
-        place: function(i, j) {            
-            this.y = i * 64 + 64/2;
-            this.x = j * 64 + 64/2;
-            map[i][j] = 1;            
-        },
-		fire: function() {
-            var enemy = getEnemy(this.x, this.y, 200);
-            if(enemy) {
-                var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-                addBullet(this.x, this.y, angle);
-                this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-        }
-        },
-        update: function (time, delta)
-        {
-            if(time > this.nextTic) {
-				this.fire();
-                this.nextTic = time + 1000;
-            }
-        }
-});
-    
-  var Bullet = new Phaser.Class({
-
-        Extends: Phaser.GameObjects.Image,
-
-        initialize:
-
-        function Bullet (scene)
-        {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
-
-            this.incX = 0;
-            this.incY = 0;
-            this.lifespan = 0;
-
-            this.speed = Phaser.Math.GetSpeed(600, 1);
-        },
-
-        fire: function (x, y, angle)
-        {
-            this.setActive(true);
-            this.setVisible(true);
-            //  Bullets fire from the middle of the screen to the given x/y
-            this.setPosition(x, y);
-            
-        //  we don't need to rotate the bullets as they are round
-        //    this.setRotation(angle);
-
-            this.dx = Math.cos(angle);
-            this.dy = Math.sin(angle);
-
-            this.lifespan = 1000;
-        },
-
-        update: function (time, delta)
-        {
-            this.lifespan -= delta;
-
-            this.x += this.dx * (this.speed * delta);
-            this.y += this.dy * (this.speed * delta);
-
-            if (this.lifespan <= 0)
-            {
-                this.setActive(false);
-                this.setVisible(false);
-            }
-        }
-
-});
-  
-  function create() {
+ function create() {
     var graphics = this.add.graphics();    
     drawLines(graphics);
     path = this.add.path(96, -32);
@@ -238,12 +74,19 @@
 
     enemies = this.physics.add.group({ classType: Enemy, runChildUpdate: true });
     bullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
-
+	iceBullets = this.physics.add.group({ classType: iceBullet, runChildUpdate: true });
+	BombBombs = this.physics.add.group({ classType: BombBomb, runChildUpdate: true });
+	BombExplosions = this.physics.add.group({ classType: BombExplosion, runChildUpdate: true });
+ 
     this.nextEnemy = 0;
     
     this.physics.add.overlap(enemies, bullets, damageEnemy);
+	this.physics.add.overlap(enemies, iceBullets, damageEnemyIce);
+	this.physics.add.overlap(enemies, BombBombs, damageEnemyBomb);
+	this.physics.add.overlap(enemies, BombExplosions, damageEnemyBombExplosion);
     
     this.input.on('pointerdown', placeTurret);
+	
 	
 		//createButton(2, 'arrow', 36, 26);
 		this.add.image(594, 15, 'sprites', 'Arrowclick').setOrigin(0)
@@ -347,7 +190,49 @@
             }
         }, this);
 	
+
 	
+	    //createupgradeButton(3, 'frost', 278, 26);
+		
+		this.add.image(594, 210, 'ArrowTowerUpgrade').setOrigin(0)
+		.setInteractive()
+        .setData('id', 4)
+        .setData('name', 'ArrowU')
+        .on('pointerup', function () {
+		if(currentGold >= 500){
+			currentGold = currentGold - 500;
+			ArrowTowerUpgrade = ArrowTowerUpgrade + 1;
+		}
+        }, this);
+	
+	    //createupgradeButton(3, 'frost', 278, 26);
+		
+		this.add.image(594, 245, 'BombTowerUpgrade').setOrigin(0)
+		.setInteractive()
+        .setData('id', 5)
+        .setData('name', 'BombU')
+        .on('pointerup', function () {
+		if(currentGold >= 500){
+			currentGold = currentGold - 500;
+			BombTowerUpgrade = BombTowerUpgrade + 1;
+		}
+        }, this);
+	
+
+	    //createupgradeButton(3, 'frost', 278, 26);
+		
+		this.add.image(594, 280, 'FrostTowerUpgrade').setOrigin(0)
+		.setInteractive()
+        .setData('id', 6)
+        .setData('name', 'frostU')
+        .on('pointerup', function () {
+		if(currentGold >= 500){
+			currentGold = currentGold - 500;
+			FrostTowerUpgrade = FrostTowerUpgrade + 1;
+		}
+        }, this);
+	
+
 	
 }
 
@@ -357,9 +242,43 @@
         // we remove the bullet right away
         bullet.setActive(false);
         bullet.setVisible(false);    
-        
+        //console.log("damageEnemy");
         // decrease the enemy hp with BULLET_DAMAGE
-        enemy.receiveDamage(BULLET_DAMAGE);
+        enemy.receiveDamage(BULLET_DAMAGE );
+    }
+}
+
+  function damageEnemyIce(enemy, iceBullets) {  
+    // only if both enemy and bullet are alive
+    if (enemy.active === true && iceBullets.active === true) {
+        // we remove the bullet right away
+        iceBullets.setActive(false);
+        iceBullets.setVisible(false);    
+        //console.log("damageEnemyice");
+        // decrease the enemy hp with BULLET_DAMAGE
+        enemy.receiveIceDamage(ICE_BULLET_DAMAGE);
+    }
+}
+
+  function damageEnemyBomb(enemy, BombBomb) {  
+    // only if both enemy and bullet are alive
+    if (enemy.active === true && BombBomb.active === true) {
+		//console.log("bomb damage called");
+        // we remove the bullet right away
+        BombBomb.setActive(false);
+        BombBomb.setVisible(false);    
+        // decrease the enemy hp with BULLET_DAMAGE
+        enemy.receiveBombDamage(BOMB_BULLET_DAMAGE);
+    }
+}
+
+  function damageEnemyBombExplosion(enemy, BombExplosions) {  
+    // only if both enemy and bullet are alive
+    if (enemy.active === true && BombExplosions.active === true) {
+        // we remove the bullet right away
+       
+        // decrease the enemy hp with BULLET_DAMAGE
+  		enemy.receiveEnemyBombExplosion(BOMB_BULLET_DAMAGE_EXPLOSION * BombTowerUpgrade, enemy.x, enemy.y);
     }
 }
 
@@ -406,28 +325,31 @@
 		if(currentselectedTower() == 0){
 			
 		}
-		 if(currentselectedTower() == 1){
+		 if(currentselectedTower() == 1 && currentGold >= 50){
 	        var Arrow = ArrowTower.get();
 			if (Arrow)
 			{
+				currentGold = currentGold - 50;
 				Arrow.setActive(true);
 				Arrow.setVisible(true);
 				Arrow.place(i, j);
 			} 
 		}
-		 if(currentselectedTower() == 2){		
+		 if(currentselectedTower() == 2 && currentGold >= 80){		
 			var Bomb = BombTower.get();
 			if (Bomb)
 			{
+				currentGold = currentGold - 80;
 				Bomb.setActive(true);
 				Bomb.setVisible(true);
 				Bomb.place(i, j);
 			} 
 		}
-		 if(currentselectedTower() == 3){
+		 if(currentselectedTower() == 3 && currentGold >= 100){
 			var Frost = FrostTower.get();
 			if (Frost)
 			{
+				currentGold = currentGold - 100;
 				Frost.setActive(true);
 				Frost.setVisible(true);
 				Frost.place(i, j);
@@ -445,8 +367,34 @@
     }
 }
 
-function getEnemy(x, y, distance) {
-    var enemyUnits = enemies.getChildren();
+  function addIceBullet(x, y, angle) {
+    var iceBullet = iceBullets.get();
+    if (iceBullet)
+    {
+        iceBullet.fire(x, y, angle);
+    }
+}
+
+  function addBombBullet(x, y, angle) {
+    var BombBomb = BombBombs.get();
+	//console.log("bomb fire called");
+    if (BombBomb)
+    {
+        BombBomb.firebomb(x, y, angle);
+    }
+}
+  
+  function addBombExplosion(x, y) {
+	  //console.log(x,y);
+    var BombExplosion = BombExplosions.get();
+    if (BombExplosion)
+    {
+        BombExplosion.spawnBomb(x, y);
+    }
+}
+
+  function getEnemy(x, y, distance) {
+    var enemyUnits = eMonster.getChildren();
     for(var i = 0; i < enemyUnits.length; i++) {       
         if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
             return enemyUnits[i];
@@ -454,42 +402,88 @@ function getEnemy(x, y, distance) {
    return false;
 } 
  
+ //  enemies
+ 
   var Enemy = new Phaser.Class({
 
         Extends: Phaser.GameObjects.Image,
 
         initialize:
-
+		
         function Enemy (scene)
         {
             Phaser.GameObjects.Image.call(this, scene, 0, 0,'monster1',);
             
-
+			
             this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
             this.hp = 0;
+			
+			var slowed = 0;
         },
 
         startOnPath: function ()
         {
             this.follower.t = 0;
             this.hp = 300;
-            
+			this.slowed = 0;
             path.getPoint(this.follower.t, this.follower.vec);
             
             this.setPosition(this.follower.vec.x, this.follower.vec.y);            
         },
+		
         receiveDamage: function(damage) {
             this.hp -= damage;           
-            
+			//this.follower.t.velocity.normalize().scale(1/6000000);
+
             // if hp drops below 0 we deactivate this enemy
             if(this.hp <= 0) {
+			    this.setActive(false);
+                this.setVisible(false);    
+				currentGold = currentGold + 50;				
+            }
+        },
+		
+		receiveIceDamage: function(iceDamage) {
+            this.hp -= iceDamage; 
+			//console.log(FrostTowerUpgrade);
+			this.slowed = 100 * FrostTowerUpgrade;
+            // if hp drops below 0 we deactivate this enemy
+            if(this.hp <= 0) {
+				currentGold = currentGold + 50;
+                this.setActive(false);
+                this.setVisible(false);      
+            }
+        },
+	
+		receiveBombDamage: function(bombDamage) {
+            this.hp -= bombDamage;
+			addBombExplosion(this.follower.vec.x, this.follower.vec.y)
+            if(this.hp <= 0) {
+				currentGold = currentGold + 50;
+                this.setActive(false);
+                this.setVisible(false);      
+            }
+        },
+		
+		receiveEnemyBombExplosion: function(bombDamageExplosion) {
+            this.hp -= bombDamageExplosion;
+
+            if(this.hp <= 0) {
+				currentGold = currentGold + 50;
                 this.setActive(false);
                 this.setVisible(false);      
             }
         },
         update: function (time, delta)
         {
+			if(this.slowed <= 0){
             this.follower.t += ENEMY_SPEED * delta;
+			this.slowed = 0;
+			}
+			else{
+			this.follower.t += ENEMY_SPEED_SLOWED * delta;
+			this.slowed -= 1;
+			}
             path.getPoint(this.follower.t, this.follower.vec);
             
             this.setPosition(this.follower.vec.x, this.follower.vec.y);
@@ -499,6 +493,8 @@ function getEnemy(x, y, distance) {
                 this.setActive(false);
                 this.setVisible(false);
             }
+
         }
 
 });
+
