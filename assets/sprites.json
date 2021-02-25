@@ -1,1 +1,372 @@
-{"frames":{"Arrowclick":{"frame":{"x":81,"y":96,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"ArrowclickDown":{"frame":{"x":0,"y":0,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"ArrowTower":{"frame":{"x":86,"y":32,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"ArrowTowerUpgrade":{"frame":{"x":64,"y":64,"w":21,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":21,"h":31},"sourceSize":{"w":21,"h":31}},"Bomb":{"frame":{"x":93,"y":160,"w":11,"h":11},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":11,"h":11},"sourceSize":{"w":11,"h":11}},"Bombclick":{"frame":{"x":0,"y":32,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"BombclickDown":{"frame":{"x":0,"y":64,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"BombExplosion":{"frame":{"x":0,"y":96,"w":80,"h":80},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":80,"h":80},"sourceSize":{"w":80,"h":80}},"BombTower":{"frame":{"x":86,"y":64,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"BombTowerUpgrade":{"frame":{"x":64,"y":0,"w":21,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":21,"h":31},"sourceSize":{"w":21,"h":31}},"bullet":{"frame":{"x":81,"y":160,"w":11,"h":11},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":11,"h":11},"sourceSize":{"w":11,"h":11}},"enemy":{"frame":{"x":32,"y":32,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"Frostclick":{"frame":{"x":86,"y":0,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"FrostclickDown":{"frame":{"x":81,"y":128,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"FrostTower":{"frame":{"x":32,"y":0,"w":31,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":31,"h":31},"sourceSize":{"w":31,"h":31}},"FrostTowerUpgrade":{"frame":{"x":64,"y":32,"w":21,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":21,"h":31},"sourceSize":{"w":21,"h":31}},"upgrade":{"frame":{"x":32,"y":64,"w":21,"h":31},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":21,"h":31},"sourceSize":{"w":21,"h":31}}},"meta":{"app":"https://www.leshylabs.com/apps/sstool/","version":"Leshy SpriteSheet Tool v0.8.4","image":"spritesheet.png","size":{"w":117,"h":176},"scale":1}}
+{
+  "frames": [
+    {
+      "filename": "Arrowclick",
+      "frame": {
+        "x": 81,
+        "y": 96,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "ArrowclickDown",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "ArrowTower",
+      "frame": {
+        "x": 86,
+        "y": 32,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "ArrowTowerUpgrade",
+      "frame": {
+        "x": 64,
+        "y": 64,
+        "w": 21,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 21,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 21,
+        "h": 31
+      }
+    },
+    {
+      "filename": "Bomb",
+      "frame": {
+        "x": 93,
+        "y": 160,
+        "w": 11,
+        "h": 11
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 11,
+        "h": 11
+      },
+      "sourceSize": {
+        "w": 11,
+        "h": 11
+      }
+    },
+    {
+      "filename": "Bombclick",
+      "frame": {
+        "x": 0,
+        "y": 32,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "BombclickDown",
+      "frame": {
+        "x": 0,
+        "y": 64,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "BombExplosion",
+      "frame": {
+        "x": 0,
+        "y": 96,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      }
+    },
+    {
+      "filename": "BombTower",
+      "frame": {
+        "x": 86,
+        "y": 64,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "BombTowerUpgrade",
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 21,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 21,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 21,
+        "h": 31
+      }
+    },
+    {
+      "filename": "bullet",
+      "frame": {
+        "x": 81,
+        "y": 160,
+        "w": 11,
+        "h": 11
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 11,
+        "h": 11
+      },
+      "sourceSize": {
+        "w": 11,
+        "h": 11
+      }
+    },
+    {
+      "filename": "enemy",
+      "frame": {
+        "x": 32,
+        "y": 32,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "Frostclick",
+      "frame": {
+        "x": 86,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "FrostclickDown",
+      "frame": {
+        "x": 81,
+        "y": 128,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "FrostTower",
+      "frame": {
+        "x": 32,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 31,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 31
+      }
+    },
+    {
+      "filename": "FrostTowerUpgrade",
+      "frame": {
+        "x": 64,
+        "y": 32,
+        "w": 21,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 21,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 21,
+        "h": 31
+      }
+    },
+    {
+      "filename": "upgrade",
+      "frame": {
+        "x": 32,
+        "y": 64,
+        "w": 21,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 21,
+        "h": 31
+      },
+      "sourceSize": {
+        "w": 21,
+        "h": 31
+      }
+    }
+  ],
+  "meta": {
+    "app": "https://www.leshylabs.com/apps/sstool/",
+    "version": "Leshy SpriteSheet Tool v0.8.4",
+    "image": "spritesheet.png",
+    "size": 
+    {
+      "w": 117,
+      "h": 176
+    },
+    "scale": 1
+  }
+}
