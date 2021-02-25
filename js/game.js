@@ -44,7 +44,7 @@
             [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0]];
 
   function preload() {    
-    this.load.atlas('sprites', 'assets/sprite.png', 'assets/sprite.json');
+    this.load.atlas('sprites', 'assets/sprite.png', 'assets/spritesheet.json');
     this.load.image('bullet', 'assets/bullet.png');
 	this.load.image('bomb', 'assets/bomb.png');
     this.load.image('monster1', 'assets/monster1_atlas.png');
