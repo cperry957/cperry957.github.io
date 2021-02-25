@@ -30,7 +30,7 @@
   var ArrowTowerUpgrade = 1;
   var BombTowerUpgrade = 1;
   var FrostTowerUpgrade = 1;
-  var currentGold = 500;
+  var currentGold = 5000000;
 
   var map =[[ 0,-1, 0, 0, 0, 0, 0, 0, 0],
             [ 0,-1, 0, 0, 0, 0, 0, 0, 0],
