@@ -76,7 +76,7 @@ class EasyGame extends Phaser.Scene{
                 this.load.audio('backgroundMusic', 'assets/sounds/backgroundMusic.mp3');
 
 				this.load.image('bullet', 'assets/bullet.png');
-				this.load.image('ArrowClick', 'assets/Arrowclick.png);
+				this.load.image('ArrowClick', 'assets/Arrowclick.png');
 				this.load.image('ArrowTower', 'assets/ArrowTower.png');
 				this.load.image('ArrowTowerUpgrade', 'assets/ArrowTowerUpgrade.png');
 				
