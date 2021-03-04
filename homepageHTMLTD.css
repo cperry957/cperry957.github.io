@@ -9,7 +9,7 @@ body, html {
 
 [data-element="card"] {
   background: #26293c; /*just for visual*/
-  height: 100%; /*just for visual*/
+  height: 25%; /*just for visual*/
   width: 100%; /* just for visual*/
 }
 

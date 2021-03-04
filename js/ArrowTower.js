@@ -3,12 +3,12 @@
         initialize:
         function Arrow (scene)
         {
-            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'Arrow');
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'ArrowTower');
             this.nextTic = 0;
         },
         place: function(i, j) {            
-            this.y = i * 64 + 64/2;
-            this.x = j * 64 + 64/2;
+            this.y = i * 32 + 32/2;
+            this.x = j * 32 + 32/2;
             map[i][j] = 1;            
         },
 		fire: function() {
@@ -42,7 +42,7 @@
             this.incY = 0;
             this.lifespan = 0;
 
-            this.speed = Phaser.Math.GetSpeed(600, 1);
+            this.speed = Phaser.Math.GetSpeed(1000, 1);
         },
 
         fire: function (x, y, angle)
@@ -85,52 +85,47 @@
     }
 }
 
-  function placeTurret(pointer) {
-    var i = Math.floor(pointer.y/64);
-    var j = Math.floor(pointer.x/64);
-    if(canPlaceTurret(i, j)) {
-		if(currentselectedTower() == 0){
-			
-		}
-		 if(currentselectedTower() == 1){
-	        var Arrow = ArrowTower.get();
-			if (Arrow)
-			{
-				Arrow.setActive(true);
-				Arrow.setVisible(true);
-				Arrow.place(i, j);
-			} 
-		}
-		 if(currentselectedTower() == 2){		
-			var Bomb = BombTower.get();
-			if (Bomb)
-			{
-				Bomb.setActive(true);
-				Bomb.setVisible(true);
-				Bomb.place(i, j);
-			} 
-		}
-		 if(currentselectedTower() == 3){
-			var Frost = FrostTower.get();
-			if (Frost)
-			{
-				Frost.setActive(true);
-				Frost.setVisible(true);
-				Frost.place(i, j);
-			} 
-		}
-			
-		}		
-}
+function getEnemy(x, y, distance) {
+    let arr = []; 
 
-  function getEnemy(x, y, distance) {
-    var enemyUnits = enemies.getChildren();
+    var enemyUnits = eMonster.getChildren();
+    var enemyUnits2 = mMonster.getChildren();
+    var enemyUnits3 = hMonster.getChildren();
+    var enemyUnits4 = bMonster.getChildren();
+
+
     for(var i = 0; i < enemyUnits.length; i++) {       
         if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
-            return enemyUnits[i];
+        {
+            arr.push(enemyUnits[i]);
+        }
    }
+   for(var i = 0; i < enemyUnits2.length; i++) {       
+    if(enemyUnits2[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits2[i].x, enemyUnits2[i].y) < distance)
+    {
+        arr.push(enemyUnits2[i]);
+    }
+    }
+    for(var i = 0; i < enemyUnits3.length; i++) {       
+        if(enemyUnits3[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits3[i].x, enemyUnits3[i].y) < distance)
+        {
+            arr.push(enemyUnits3[i]);
+        }
+        }
+    for(var i = 0; i < enemyUnits4.length; i++) {       
+        if(enemyUnits4[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits4[i].x, enemyUnits4[i].y) < distance)
+        {
+            arr.push(enemyUnits4[i]);
+        }
+        }
+
+    if (arr.length != 0 && arr[0].active)
+    {
+        return arr[0];
+    }
+
    return false;
-} 
+}
  
  
  
