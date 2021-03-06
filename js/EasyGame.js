@@ -59,7 +59,7 @@ class EasyGame extends Phaser.Scene{
                 this.load.image('grassTiles', 'assets/ArtWork/Maps/grass.png');
                 this.load.image('castleTiles', 'assets/ArtWork/Maps/castle.png');
                 this.load.image('grassDirtTiles', 'assets/ArtWork/Maps/grassdirt.png');
-                this.load.tilemapTiledJSON('easyMap', 'assets/ArtWork/Maps/easyMap.json'); 
+                this.load.tilemapTiledJSON('easyMap', 'assets/ArtWork/Maps/EasyMap.json'); 
 
                 this.load.image('musicOn', 'assets/musicOn.png');
                 this.load.image('musicOff', 'assets/musicOff.png');
