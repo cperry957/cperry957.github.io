@@ -55,7 +55,7 @@ class HardGame extends Phaser.Scene{
                 this.load.image('longGrassTiles', 'assets/ArtWork/Maps/longGrass.png');
                 this.load.image('castleTiles', 'assets/ArtWork/Maps/castle.png');
                 this.load.image('gravelPathTiles', 'assets/ArtWork/Maps/gravelPath.png');
-                this.load.tilemapTiledJSON('hardMap', 'assets/ArtWork/Maps/hardMap.json');
+                this.load.tilemapTiledJSON('hardMap', 'assets/ArtWork/Maps/HardMap.json');
 
                 this.load.image('musicOn', 'assets/musicOn.png');
                 this.load.image('musicOff', 'assets/musicOff.png');
