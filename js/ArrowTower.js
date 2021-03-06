@@ -12,7 +12,7 @@
             map[i][j] = 1;            
         },
 		fire: function() {
-            var enemy = getEnemy(this.x, this.y, 200 * ArrowTowerUpgrade);
+            var enemy = getEnemy(this.x, this.y, 200 + (ArrowTowerUpgrade * 10 ));
             if(enemy) {
                 var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
                 addBullet(this.x, this.y, angle);
@@ -23,7 +23,7 @@
         {
             if(time > this.nextTic) {
 				this.fire();
-                this.nextTic = time + 1000 - (ArrowTowerUpgrade * 50);
+                this.nextTic = time + 1000 - (ArrowTowerUpgrade * 50 );
             }
         }
 });
@@ -42,7 +42,7 @@
             this.incY = 0;
             this.lifespan = 0;
 
-            this.speed = Phaser.Math.GetSpeed(1000, 1);
+            this.speed = Phaser.Math.GetSpeed(1500, 1);
         },
 
         fire: function (x, y, angle)

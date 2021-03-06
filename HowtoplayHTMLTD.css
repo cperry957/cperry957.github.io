@@ -7,10 +7,7 @@
     border-radius: 7pt;
     background: #ffeebb;
 } 
-body, html {
-  background: #808080;
-  height: 100%;
-}
+
 /* The grid-area property places a grid item into a named 
    * region (area) of the grid. */
   #title    { grid-area: title }

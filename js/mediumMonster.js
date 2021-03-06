@@ -18,7 +18,7 @@ var MediumMonster = new Phaser.Class({
     startOnPath: function ()
     {
         this.follower.t = 0;
-        this.hp = 500;
+        this.hp = 250;
         this.slowed = 0;
         path.getPoint(this.follower.t, this.follower.vec);
         
@@ -29,11 +29,11 @@ var MediumMonster = new Phaser.Class({
         this.hp -= damage;           
         //this.follower.t.velocity.normalize().scale(1/6000000);
 
-        if (this.hp <= 30 && this.hp >= 20)
+        if (this.hp <= 175 && this.hp >= 100)
         {
             this.tint = 0xff8f8f;
         }
-        else if (this.hp < 20 && this.hp >= 10)
+        else if (this.hp < 100 && this.hp >= 0)
         {
             this.tint = 0xfc2b2b;
         }
@@ -42,7 +42,7 @@ var MediumMonster = new Phaser.Class({
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
             this.destroy();   
-            currentGold = currentGold + 100;	
+            currentGold = currentGold + 15;	
             this.clearTint();			
         }
     },
@@ -53,7 +53,7 @@ var MediumMonster = new Phaser.Class({
         this.slowed = 100 * FrostTowerUpgrade;
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
-            currentGold = currentGold + 50;
+            currentGold = currentGold + 15;
             this.destroy();        
         }
     },
@@ -62,7 +62,7 @@ var MediumMonster = new Phaser.Class({
         this.hp -= bombDamage;
         addBombExplosion(this.follower.vec.x, this.follower.vec.y)
         if(this.hp <= 0) {
-            currentGold = currentGold + 50;
+            currentGold = currentGold + 15;
             this.destroy();        
         }
     },
@@ -71,14 +71,14 @@ var MediumMonster = new Phaser.Class({
         this.hp -= bombDamageExplosion;
 
         if(this.hp <= 0) {
-            currentGold = currentGold + 50;
+            currentGold = currentGold + 15;
             this.destroy();        
         }
     },
     update: function (time, delta)
     {
         if(this.slowed <= 0){
-        this.follower.t += ENEMY_SPEED * delta;
+        this.follower.t += (1/12000) * delta;
         this.slowed = 0;
         }
         else{

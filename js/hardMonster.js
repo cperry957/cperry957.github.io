@@ -11,7 +11,7 @@ var HardMonster = new Phaser.Class({
         
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
-        this.eMonsterPower = 10;
+        this.eMonsterPower = 15;
         var slowed = 0;
     },
 
@@ -29,11 +29,11 @@ var HardMonster = new Phaser.Class({
         this.hp -= damage;           
         //this.follower.t.velocity.normalize().scale(1/6000000);
 
-        if (this.hp <= 30 && this.hp >= 20)
+        if (this.hp <= 700 && this.hp >= 500)
         {
             this.tint = 0xff8f8f;
         }
-        else if (this.hp < 20 && this.hp >= 10)
+        else if (this.hp < 500 && this.hp >= 0)
         {
             this.tint = 0xfc2b2b;
         }
@@ -42,7 +42,7 @@ var HardMonster = new Phaser.Class({
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
             this.destroy();   
-            currentGold = currentGold + 150;	
+            currentGold = currentGold + 50;	
             this.clearTint();			
         }
     },
@@ -78,7 +78,7 @@ var HardMonster = new Phaser.Class({
     update: function (time, delta)
     {
         if(this.slowed <= 0){
-        this.follower.t += ENEMY_SPEED * delta;
+        this.follower.t += (1/15000) * delta;
         this.slowed = 0;
         }
         else{

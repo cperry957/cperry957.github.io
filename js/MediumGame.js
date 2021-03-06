@@ -1,48 +1,10 @@
-  var ArrowTower;
-  var BombTower;
-  var FrostTower;
-  var bullets;
-  var iceBullets;
-  var BombBombs;
-  var BombExplosions;
-  var selectedTower;
-  var ENEMY_SPEED = 1/10000;
-  var ENEMY_SPEED_SLOWED = 1/90000;
-  var BULLET_DAMAGE = 2;
-  var ICE_BULLET_DAMAGE = 1;
-  var BOMB_BULLET_DAMAGE = 3;
-  var BOMB_BULLET_DAMAGE_EXPLOSION = 10;
-  var ArrowTowerUpgrade;
-  var BombTowerUpgrade;
-  var FrostTowerUpgrade;
-  
-  var eMonster;
-  var mMonster;
-  var hMonster;
-  var bMonster; 
 
-  var eMonsterCount;
-  var mMonsterCount; 
-  var hMonsterCount;
-  var bMonsterCount; 
-
-  var path;
-  var currentGold;
-
-  var mouseClick; 
-  var backgroundMusic;
-
-  var music; 
-  var musicButton = null;
-  var nextWave; 
- 
-
-  var map =[];
-
+	
 class MediumGame extends Phaser.Scene{
     constructor(){
         super("MediumGame"); 
     }
+
     monster1; 
  
     turrets;
@@ -67,19 +29,20 @@ class MediumGame extends Phaser.Scene{
 
 
 
+
     preload() {    
 
                 this.load.audio('mouseClick', 'assets/sounds/mouseClick.mp3');
-                this.load.audio('backgroundMusic', 'assets/sounds/backgroundMusic.mp3');
+                this.load.audio('backgroundMusicMedium', 'assets/sounds/backgroundMusicMedium.mp3');
 
 				this.load.image('bullet', 'assets/bullet.png');
 				this.load.image('ArrowClick', 'assets/ArrowClick.png');
 				this.load.image('ArrowTower', 'assets/ArrowTower.png');
 				this.load.image('ArrowTowerUpgrade', 'assets/ArrowTowerUpgrade.png');
 				
-				this.load.image('Bomb', 'assets/Bomb.png');
+				this.load.image('Bomb', 'assets/bombBullet.png');
 				this.load.image('Bombclick', 'assets/Bombclick.png');
-				this.load.image('BombExplosion1', 'assets/pixil-frame-0.png');
+				this.load.image('BombExplosion1', 'assets/BombExplosion1.png');
 				this.load.image('BombTower', 'assets/BombTower.png');
 				this.load.image('BombTowerUpgrade', 'assets/BombTowerUpgrade.png');
 				
@@ -92,7 +55,7 @@ class MediumGame extends Phaser.Scene{
                 this.load.image('castleTiles', 'assets/ArtWork/Maps/castle.png');
                 this.load.image('dirtPathTiles', 'assets/ArtWork/Maps/dirtPath.png');
                 this.load.tilemapTiledJSON('mediumMap', 'assets/ArtWork/Maps/mediumMap.json'); 
-				
+
                 this.load.image('musicOn', 'assets/musicOn.png');
                 this.load.image('musicOff', 'assets/musicOff.png');
                 this.load.image('coins', 'assets/coins.png');
@@ -120,32 +83,40 @@ class MediumGame extends Phaser.Scene{
                 this.load.image('ten', 'assets/ArtWork/Numbers/10.png');
                 this.load.image('zero', 'assets/ArtWork/Numbers/0.png');
 
+                this.load.image('lostGrayScreen', 'assets/lostGrayScreen.png');
                 this.load.image('gameOverBackground', 'assets/gameOver.png');
                 this.load.image('tryAgainButton', 'assets/tryAgainButton.png');
 
                 this.load.image('fire1', 'assets/fire1.png');
                 this.load.image('fire2', 'assets/fire2.png');
                 this.load.image('fire3', 'assets/fire3.png');
+                
             }
 
     create(){
-		this.eMonsterCount = 0;
-        this.mMonsterCount = 0; 
-        this.hMonsterCount = 0;
-        this.bMonsterCount = 0;
+
+
+        if (this.monsterArray === undefined || this.monsterArra == 0)
+        {
+            this.monsterArray = []; 
+        }
+        else
+        {
+            this.monsterArray = []; 
+        }
 
         this.music = true; 
 
         this.mouseClick = this.sound.add('mouseClick');
-        this.backgroundMusic = this.sound.add('backgroundMusic', {volume: 0.5, loop: true}); 
+        this.backgroundMusic = this.sound.add('backgroundMusicMedium', {volume: 0.5, loop: true}); 
 
         this.lostGame = 0; 
         this.castleHealth = 100;
-		currentGold = 5000000;
+		currentGold = 500;
         this.fire1 = false;
         this.fire2 = false;
         this.fire3 = false;
-		
+
         const mediumMap = this.make.tilemap({key: 'mediumMap'}); 
         const dirtTileset = mediumMap.addTilesetImage('dirt', 'dirtTiles', 32,32,0,0);
         const castleTileset = mediumMap.addTilesetImage('castle', 'castleTiles', 32,32,0,0);
@@ -155,52 +126,54 @@ class MediumGame extends Phaser.Scene{
         
         const layer3 = mediumMap.createLayer('monsterpath', dirtPathTileset,0,0); 
         const layer4 = mediumMap.createLayer('ground2', castleTileset,0,0); 
+
         
         var graphics = this.add.graphics();    
-        this.drawLines(graphics);
-		
-		selectedTower = 1;
-		ArrowTowerUpgrade = 1;
-		BombTowerUpgrade = 1;
-		FrostTowerUpgrade = 1;
+        //this.drawLines(graphics);
+	    
+	selectedTower = 1;
+	ArrowTowerUpgrade = 1;
+  	BombTowerUpgrade = 1;
+  	FrostTowerUpgrade = 1;
 
-			map =[[],
-             [] ,
-             [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,],
-             [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,],
-             [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
-             [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
-             [ 0, 0, 0, 0,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
-		 	 [ 0, 0, 0, 0,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
-		  	 [ 0, 0, 0, 0,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
-             [ 0, 0, 0, 0,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
-			 [ 0, 0, 0, 0,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1],
-             [-1,-1,-1,-1,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0],
-             [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0],
-             [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0],
-             [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-             [ 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-             [ , , , , , , , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ,, ,, , , ],
-			 [],
-			 []]
+      map =[[],
+      [] ,
+      [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,],
+      [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,],
+      [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
+      [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
+      [ 0, 0, 0, 0,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
+      [ 0, 0, 0, 0,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
+      [ 0, 0, 0, 0,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
+      [ 0, 0, 0, 0,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,],
+      [ 0, 0, 0, 0,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1],
+      [-1,-1,-1,-1,-1, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0],
+      [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0],
+      [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0],
+      [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [ 0, 0, 0, 0, 0, 0, 0,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [],
+      []]
 
-        path = this.add.path(0, 370);
-        path.lineTo(145, 370);
-        path.lineTo(145, 210);
-        path.lineTo(245, 210);
-        path.lineTo(245, 495);
-        path.lineTo(400, 495);
-        path.lineTo(400, 430);
-        path.lineTo(685, 430);
-        path.lineTo(685, 340);
+            path = this.add.path(-30, 370);
+            path.lineTo(145, 370);
+            path.lineTo(145, 210);
+            path.lineTo(245, 210);
+            path.lineTo(245, 495);
+            path.lineTo(400, 495);
+            path.lineTo(400, 430);
+            path.lineTo(685, 430);
+            path.lineTo(685, 340);
 
         const layer2 = mediumMap.createLayer('castle', castleTileset,0,0);  
 
-        graphics.lineStyle(2, 0xffffff, 1);
+        
+        //graphics.lineStyle(2, 0xffffff, 1);
 
         path.draw(graphics);
 
-		this.add.image(370, 30, 'wave').setScale(.7);
+        this.add.image(370, 30, 'wave').setScale(.7);
         this.currentWaveImage = this.add.image(470, 30, 'zero').setScale(1.4);
 
         this.add.image(770, 30, 'menuBurger').setScale(.5)
@@ -211,8 +184,13 @@ class MediumGame extends Phaser.Scene{
 
         this.nextMonster = 0; 
         this.currentWave = 0; 
-		this.nextWave = this.add.image(400, 570, 'nextWave').setScale(.7)
+
+        //this.createGroup();
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        this.nextWave = this.add.image(400, 570, 'nextWave').setScale(.7)
         .setInteractive({useHandCursor: true})
+        .on('pointerover', () => {this.nextWave.setTint(0x757575)})
+        .on('pointerout', () => {this.nextWave.clearTint()})
         .on('pointerdown', ()=> this.startNextWave());
 
         this.healthText = this.add.text(610, 220, "Heatlh: " + this.castleHealth, 
@@ -227,10 +205,14 @@ class MediumGame extends Phaser.Scene{
 		{font: "40px Arial", 
          fill: "#ffffff", 
          align: "center" });
-		 
-		 
-		 
-		 eMonster = this.physics.add.group({ classType: EasyMonster, runChildUpdate: true });
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	eMonster = this.physics.add.group({ classType: EasyMonster, runChildUpdate: true });
     mMonster = this.physics.add.group({ classType: MediumMonster, runChildUpdate: true });
     hMonster = this.physics.add.group({ classType: HardMonster, runChildUpdate: true });
     bMonster = this.physics.add.group({ classType: BossMonster, runChildUpdate: true });
@@ -269,33 +251,29 @@ class MediumGame extends Phaser.Scene{
     this.input.on('pointerdown', placeTurret);
 	
 		//createButton(2, 'arrow', 36, 26);
-		this.add.image(1, 520, 'ArrowClick').setOrigin(0)
-		.setInteractive()
+		var arrowButton = this.add.image(20, 550, 'ArrowClick').setOrigin(0)
+		.setInteractive({useHandCursor: true})
         .setData('id', 1)
         .setData('name', 'arrow')
         .setData('active', false)
-        .on('pointerout', function () {
-			
-        })
+        .on('pointerover', () => {arrowButton.setTint(0x757575)})
+        .on('pointerout', () => {arrowButton.clearTint()})
         .on('pointerup', function () {
 
             if (selectedTower!= 1)
             {
-				
                 selectedTower = 1
             }
         }, this);
 		
 		   //createButton(2, 'bomb', 157, 26);
-		this.add.image(75, 520, 'Bombclick').setOrigin(0)
-		.setInteractive()
+        var bombButton = this.add.image(70, 550, 'Bombclick').setOrigin(0)
+		.setInteractive({useHandCursor: true})
         .setData('id', 2)
         .setData('name', 'bomb')
         .setData('active', false)
-        .on('pointerout', function () {
-
-
-        })
+        .on('pointerover', () => {bombButton.setTint(0x757575)})
+        .on('pointerout', () => {bombButton.clearTint()})
         .on('pointerup', function () {
 
             if (selectedTower!= 2)
@@ -307,14 +285,13 @@ class MediumGame extends Phaser.Scene{
 
  
     //createButton(3, 'frost', 278, 26);
-		this.add.image(150, 520, 'Frostclick').setOrigin(0)
-		.setInteractive()
+        var frostButton = this.add.image(120, 550, 'Frostclick').setOrigin(0)
+		.setInteractive({useHandCursor: true})
         .setData('id', 3)
         .setData('name', 'frost')
         .setData('active', false)
-        .on('pointerout', function () {
-
-        })
+        .on('pointerover', () => {frostButton.setTint(0x757575)})
+        .on('pointerout', () => {frostButton.clearTint()})
         .on('pointerup', function () {
 
             if (selectedTower!= 3)
@@ -328,10 +305,12 @@ class MediumGame extends Phaser.Scene{
 	
 	    //createupgradeButton(3, 'frost', 278, 26);
 		
-		this.add.image(575, 520, 'ArrowTowerUpgrade').setOrigin(0)
-		.setInteractive()
+		var arrowUpgrade = this.add.image(600, 550, 'ArrowTowerUpgrade').setOrigin(0)
+		.setInteractive({useHandCursor: true})
         .setData('id', 4)
         .setData('name', 'ArrowU')
+        .on('pointerover', () => {arrowUpgrade.setTint(0x757575)})
+        .on('pointerout', () => {arrowUpgrade.clearTint()})
         .on('pointerup', function () {
 		if(currentGold >= 500){
 			console.log("upgrading 1")
@@ -343,10 +322,12 @@ class MediumGame extends Phaser.Scene{
 	
 	    //createupgradeButton(3, 'frost', 278, 26);
 		
-		this.add.image(650, 520, 'BombTowerUpgrade').setOrigin(0)
-		.setInteractive()
+		var bombUpgrade = this.add.image(650, 550, 'BombTowerUpgrade').setOrigin(0)
+		.setInteractive({useHandCursor: true})
         .setData('id', 5)
         .setData('name', 'BombU')
+        .on('pointerover', () => {bombUpgrade.setTint(0x757575)})
+        .on('pointerout', () => {bombUpgrade.clearTint()})
         .on('pointerup', function () {
 		if(currentGold >= 500){
 			console.log("upgrading 2")
@@ -358,10 +339,12 @@ class MediumGame extends Phaser.Scene{
 
 	    //createupgradeButton(3, 'frost', 278, 26);
 		
-		this.add.image(725, 520, 'FrostTowerUpgrade').setOrigin(0)
-		.setInteractive()
+		var frostUpgrade = this.add.image(700, 550, 'FrostTowerUpgrade').setOrigin(0)
+		.setInteractive({useHandCursor: true})
         .setData('id', 6)
         .setData('name', 'frostU')
+        .on('pointerover', () => {frostUpgrade.setTint(0x757575)})
+        .on('pointerout', () => {frostUpgrade.clearTint()})
         .on('pointerup', function () {
 		if(currentGold >= 500){
 			console.log("upgrading 3")
@@ -369,10 +352,57 @@ class MediumGame extends Phaser.Scene{
 			FrostTowerUpgrade = FrostTowerUpgrade + 1;
 		}
         }, this);
-	
 
         this.startMusic(); 
-		 
+
+        this.towerHover();
+
+    }
+
+    //controls tower hover over field before placing
+    //work cited: https://academy.zenva.com/lesson/creating-the-map/
+    towerHover(){
+
+        this.arrowHover = this.add.image(50, 50, 'ArrowTower'); 
+        this.arrowHover.alpha = 0; 
+
+        this.bombHover = this.add.image(50, 50, 'BombTower'); 
+        this.bombHover.alpha = 0; 
+
+        this.forstHover = this.add.image(50, 50, 'FrostTower'); 
+        this.forstHover.alpha = 0; 
+
+        this.input.on('pointermove', function(pointer) {
+        var x = Math.floor(pointer.y/32);
+        var y = Math.floor(pointer.x/32);
+
+        if (map[x,y] !== 'undefined' && x != -1)
+        {
+            if(canPlaceTurret(x, y) && currentselectedTower() == 1)
+            {
+                this.arrowHover.setPosition(y*32+16,x*32+16, 'ArrowTower'); 
+                this.arrowHover.alpha = 1; 
+            }
+            else if(canPlaceTurret(x, y) && currentselectedTower() == 2)
+            {
+                this.bombHover.setPosition(y*32+16,x*32+16, 'BombTower'); 
+                this.bombHover.alpha = 1; 
+            }
+            else if(canPlaceTurret(x, y) && currentselectedTower() == 3)
+            {
+                this.forstHover.setPosition(y*32+16,x*32+16, 'FrostTower'); 
+                this.forstHover.alpha = 1; 
+            }
+            else
+            {
+                this.arrowHover.alpha = 0; 
+                this.bombHover.alpha = 0; 
+                this.forstHover.alpha = 0; 
+            }
+        }
+
+    }.bind(this));
+
     }
 
     startMusic()
@@ -420,6 +450,26 @@ class MediumGame extends Phaser.Scene{
         this.enemyGroup = this.add.group({classType: EasyMonster, runChildUpdate: true});
     }
 
+    addMonsters(e, m, h, b)
+    {
+        for (var x = 0; x < e; x++)
+        {
+            this.monsterArray.push("easyMonster"); 
+        }
+        for (var x = 0; x < m; x++)
+        {
+            this.monsterArray.push("mediumMonster"); 
+        }
+        for (var x = 0; x < h; x++)
+        {
+            this.monsterArray.push("hardMonster"); 
+        }
+        for (var x = 0; x < b; x++)
+        {
+            this.monsterArray.push("bossMonster"); 
+        }
+    }
+
     startNextWave()
     {
         this.currentWave += 1; 
@@ -429,176 +479,139 @@ class MediumGame extends Phaser.Scene{
         if (this.currentWave == 1)
         {
             this.currentWaveImage = this.add.image(470, 30, 'one').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 40;
-        this.mMonsterCount = this.mMonsterCount + 0; 
-        this.hMonsterCount = this.hMonsterCount + 0;
-        this.bMonsterCount = this.bMonsterCount + 0; 
+            this.addMonsters(40,0,0,0); 
         }
         else if (this.currentWave == 2)
         {
             this.currentWaveImage = this.add.image(470, 30, 'two').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 40;
-        this.mMonsterCount = this.mMonsterCount + 20; 
-        this.hMonsterCount = this.hMonsterCount + 0;
-        this.bMonsterCount = this.bMonsterCount + 0; 
+            this.addMonsters(40,20,0,0); 
         }
         else if (this.currentWave == 3)
         {
             this.currentWaveImage = this.add.image(470, 30, 'three').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 40;
-        this.mMonsterCount = this.mMonsterCount + 40; 
-        this.hMonsterCount = this.hMonsterCount + 5;
-        this.bMonsterCount = this.bMonsterCount + 0; 
+            this.addMonsters(40,40,5,0); 
         }
         else if (this.currentWave == 4)
         {
             this.currentWaveImage = this.add.image(470, 30, 'four').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 0;
-        this.mMonsterCount = this.mMonsterCount + 40; 
-        this.hMonsterCount = this.hMonsterCount + 20;
-        this.bMonsterCount = this.bMonsterCount + 0; 
+            this.addMonsters(0,40,20,0); 
         }
         else if (this.currentWave == 5)
         {
             this.currentWaveImage = this.add.image(470, 30, 'five').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 60;
-        this.mMonsterCount = this.mMonsterCount + 60; 
-        this.hMonsterCount = this.hMonsterCount + 20;
-        this.bMonsterCount = this.bMonsterCount + 0; 
+            this.addMonsters(60,60,20,0); 
         }
         else if (this.currentWave == 6)
         {
             this.currentWaveImage = this.add.image(470, 30, 'six').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 0;
-        this.mMonsterCount = this.mMonsterCount + 0; 
-        this.hMonsterCount = this.hMonsterCount + 0;
-        this.bMonsterCount = this.bMonsterCount + 10;  
+            this.addMonsters(0,0,0,10); 
         }
         else if (this.currentWave == 7)
         {
             this.currentWaveImage = this.add.image(470, 30, 'seven').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 100;
-        this.mMonsterCount = this.mMonsterCount + 100; 
-        this.hMonsterCount = this.hMonsterCount + 100;
-        this.bMonsterCount = this.bMonsterCount + 0; 
+            this.addMonsters(100,100,100,0); 
         }
         else if (this.currentWave == 8)
         {
             this.currentWaveImage = this.add.image(470, 30, 'eight').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 100;
-        this.mMonsterCount = this.mMonsterCount + 100; 
-        this.hMonsterCount = this.hMonsterCount + 100;
-        this.bMonsterCount = this.bMonsterCount + 0; 
+            this.addMonsters(100,100,100,0); 
         }
         else if (this.currentWave == 9)
         {
             this.currentWaveImage = this.add.image(470, 30, 'nine').setScale(1.4);
-			
-        this.eMonsterCount = this.eMonsterCount + 100;
-        this.mMonsterCount = this.mMonsterCount + 100; 
-        this.hMonsterCount = this.hMonsterCount + 100;
-        this.bMonsterCount = this.bMonsterCount + 0; 
+            this.addMonsters(100,100,100,0);
         }
         else if (this.currentWave == 10)
         {
             this.nextWave.destroy(); 
             this.nextWave = null; 
             this.currentWaveImage = this.add.image(485, 30, 'ten').setScale(0.7);
-		this.eMonsterCount = this.eMonsterCount + 0;
-        this.mMonsterCount = this.mMonsterCount + 0; 
-        this.hMonsterCount = this.hMonsterCount + 0;
-        this.bMonsterCount = this.bMonsterCount + 20; 
+            this.addMonsters(0,0,0,25);
         }
         else
         {
             this.currentWaveImage = null; 
         }
 
-        //this.eMonsterCount = this.eMonsterCount + 1;
-      //  this.mMonsterCount = this.mMonsterCount + 1; 
-      //  this.hMonsterCount = this.hMonsterCount + 1;
-     //   this.bMonsterCount = this.bMonsterCount + 1; 
-
         this.startTime();
     }
 
     startTime()
     {
-        var totalMonsters = this.eMonsterCount + this.mMonsterCount + this.hMonsterCount + this.bMonsterCount; 
-
-        this.timer = this.time.addEvent({ delay: 100, callback: this.spawnMonster, callbackScope: this, repeat: totalMonsters });
-        
+        this.timer = this.time.addEvent({ delay: 100, callback: this.spawnMonster, callbackScope: this, repeat: this.monsterArray.length });
     }
 
     spawnMonster()
     {
-        if(this.eMonsterCount > 0)
-           {
-			var bacemonster = eMonster.get();
-			if (bacemonster){
-				bacemonster.setActive(true);
-            bacemonster.setVisible(true);
-             // place the robert at the start of the path
-            bacemonster.startOnPath();
-            this.eMonsterCount -= 1; 
-			}
 
-		}
-        else if(this.mMonsterCount > 0)
+        var x = this.monsterArray.length; 
+        
+        if (this.monsterArray[0] == "easyMonster")
         {
-			var bacemonster2 = mMonster.get();
-			if (bacemonster2){
-				bacemonster2.setActive(true);
-            bacemonster2.setVisible(true);
-             // place the robert at the start of the path
-            bacemonster2.startOnPath();
-            this.mMonsterCount -= 1; 
-			}
-		}
-        else if(this.hMonsterCount > 0)
+            var newMonster = eMonster.get(); 
+            if (newMonster)
+            {
+                newMonster.setActive(true); 
+                newMonster.setVisible(true); 
+                newMonster.startOnPath();
+                this.monsterArray.shift(); 
+            }
+        }
+        else if (this.monsterArray[0] == "mediumMonster")
         {
-			var bacemonster3 = hMonster.get();
-			if (bacemonster3){
-				bacemonster3.setActive(true);
-            bacemonster3.setVisible(true);
-             // place the robert at the start of the path
-            bacemonster3.startOnPath();
-            this.hMonsterCount -= 1; 
-			}
-		}
-        else if(this.bMonsterCount > 0)
+            var newMonster = mMonster.get(); 
+            if (newMonster)
+            {
+                newMonster.setActive(true); 
+                newMonster.setVisible(true); 
+                newMonster.startOnPath();
+                this.monsterArray.shift(); 
+            }
+        }
+        else if (this.monsterArray[0] == "hardMonster")
         {
-			var bacemonster4 = bMonster.get();
-			if (bacemonster4){
-				bacemonster4.setActive(true);
-            bacemonster4.setVisible(true);
-             // place the robert at the start of the path
-            bacemonster4.startOnPath();
-            this.bMonsterCount -= 1; 
-			}
-		}
+            var newMonster = hMonster.get(); 
+            if (newMonster)
+            {
+                newMonster.setActive(true); 
+                newMonster.setVisible(true); 
+                newMonster.startOnPath();
+                this.monsterArray.shift(); 
+            }
+        }
+        else if (this.monsterArray[0] == "bossMonster")
+        {
+            var newMonster = bMonster.get(); 
+            if (newMonster)
+            {
+                newMonster.setActive(true); 
+                newMonster.setVisible(true); 
+                newMonster.startOnPath();
+                this.monsterArray.shift(); 
+            }
+        }
+        else
+        {
+            this.monsterArray = []; 
+        }
     }
 
     checkLost()
     {
         if (this.castleHealth <= 0 && this.lostGame != 1)
         {
+            this.monsterArray = []; 
+
             this.lostGame = 1;
 
             var fire3 = this.add.image(700, 200, 'fire3').setScale(.7);
 
-            var blockBackground = this.add.image(400, 370, 'cancelButton').setScale(10.0).setInteractive({useHandCursor: true})
-            .on('pointerdown', ()=> null);
+            var blockBackground = this.add.image(400, 370, 'lostGrayScreen').setScale(2.0)
+            .setInteractive({useHandCursor: true})
+            .on('pointerdown', ()=> this.quitGame());
+            
             var lostBackground = this.add.image(400, 270, 'gameOverBackground').setScale(1.1);
-            var tryAgain = this.add.image(400, 380, 'tryAgainButton')
+            var tryAgain = this.add.image(400, 330, 'tryAgainButton')
             .setInteractive({useHandCursor: true})
             .on('pointerdown', ()=> this.quitGame());
         }
@@ -632,8 +645,10 @@ class MediumGame extends Phaser.Scene{
 		this.currentGoldTotal.text =  currentGold; 
     }
 
+
     openMenu()
     {
+        this.mouseClick.play(); 
 
         this.cancelButton = this.add.image(400, 370, 'cancelButton').setScale(10.0)
         .setInteractive({useHandCursor: true})
@@ -649,12 +664,21 @@ class MediumGame extends Phaser.Scene{
     }
 
     quitGame()
-    {
+    {   
+        this.musicButton.destroy();
+        this.backgroundMusic.stop();
+        this.mouseClick.play(); 
+        //this.scene.restart();
         this.scene.start("bootGame");
     }
 
     cancelMenu()
     {
+        this.mouseClick.play(); 
+        //let sceneB = this.scene.get('easyMonster'); 
+        //let pleaseWork = sceneB.testFunction(); 
+        
+
         this.cancelButton.destroy(); 
         this.saveButton.destroy(); 
         this.quitButton.destroy(); 
@@ -677,144 +701,7 @@ class MediumGame extends Phaser.Scene{
         graphics.strokePath();
     }
         
+		
+		
 
 }
-
-  function changegold(goldreduction){
-		currentGold -= goldreduction;
-}
-
-  function damageEnemy(enemy, bullet) {  
-  
-    // only if both enemy and bullet are alive
-    if (enemy.active === true && bullet.active === true) {
-        // we remove the bullet right away
-        bullet.setActive(false);
-        bullet.setVisible(false);    
-        //console.log("damageEnemy");
-        // decrease the enemy hp with BULLET_DAMAGE
-        enemy.receiveDamage(BULLET_DAMAGE );
-    }
-}
-
-  function damageEnemyIce(enemy, iceBullets) {  
-    // only if both enemy and bullet are alive
-    if (enemy.active === true && iceBullets.active === true) {
-        // we remove the bullet right away
-        iceBullets.setActive(false);
-        iceBullets.setVisible(false);    
-        //console.log("damageEnemyice");
-        // decrease the enemy hp with BULLET_DAMAGE
-        enemy.receiveIceDamage(ICE_BULLET_DAMAGE);
-    }
-}
-
-  function damageEnemyBomb(enemy, BombBomb) {  
-    // only if both enemy and bullet are alive
-    if (enemy.active === true && BombBomb.active === true) {
-		//console.log("bomb damage called");
-        // we remove the bullet right away
-        BombBomb.setActive(false);
-        BombBomb.setVisible(false);    
-        // decrease the enemy hp with BULLET_DAMAGE
-        enemy.receiveBombDamage(BOMB_BULLET_DAMAGE);
-    }
-}
-
-  function damageEnemyBombExplosion(enemy, BombExplosions) {  
-    // only if both enemy and bullet are alive
-    if (enemy.active === true && BombExplosions.active === true) {
-        // we remove the bullet right away
-       
-        // decrease the enemy hp with BULLET_DAMAGE
-  		enemy.receiveEnemyBombExplosion(BOMB_BULLET_DAMAGE_EXPLOSION * BombTowerUpgrade, enemy.x, enemy.y);
-    }
-}
-
-  function canPlaceTurret(i, j) {
-    return map[i][j] === 0;
-}
-
-  function currentselectedTower(){
-      return selectedTower;
-}
-
-  function placeTurret(pointer) {
-    var i = Math.floor(pointer.y/32);
-    var j = Math.floor(pointer.x/32);
-    if(canPlaceTurret(i, j)) {
-		 if(currentselectedTower() == 1 && currentGold >= 50){
-	        var Arrow = ArrowTower.get();
-			if (Arrow)
-			{
-				changegold(50);
-				//this.currentGold = this.currentGold - 50;
-				Arrow.setActive(true);
-				Arrow.setVisible(true);
-				Arrow.place(i, j);
-				map[i][j] = 1;
-			} 
-		}
-		 if(currentselectedTower() == 2 && currentGold >= 80){		
-			var Bomb = BombTower.get();
-			if (Bomb)
-			{
-				changegold(80);
-				//this.currentGold = this.currentGold - 80;
-				Bomb.setActive(true);
-				Bomb.setVisible(true);
-				Bomb.place(i, j);
-				map[i][j] = 2;
-			} 
-		}
-		 if(currentselectedTower() == 3 && currentGold >= 100){
-			var Frost = FrostTower.get();
-			if (Frost)
-			{
-				changegold(100);
-				//this.currentGold = this.currentGold - 100;
-				Frost.setActive(true);
-				Frost.setVisible(true);
-				Frost.place(i, j);
-				map[i][j] = 3;
-				console.log(map[i][j]);
-			} 
-		}
-			
-		}		
-}
-
-  function addBullet(x, y, angle) {
-    var bullet = bullets.get();
-    if (bullet)
-    {
-        bullet.fire(x, y, angle);
-    }
-}
-
-  function addIceBullet(x, y, angle) {
-    var iceBullet = iceBullets.get();
-    if (iceBullet)
-    {
-        iceBullet.fire(x, y, angle);
-    }
-}
-
-  function addBombBullet(x, y, angle) {
-    var BombBomb = BombBombs.get();
-	//console.log("bomb fire called");
-    if (BombBomb)
-    {
-        BombBomb.firebomb(x, y, angle);
-    }
-}
-  
-  function addBombExplosion(x, y) {
-	  //console.log(x,y);
-    var BombExplosion = BombExplosions.get();
-    if (BombExplosion)
-    {
-        BombExplosion.spawnBomb(x, y);
-    }
-}
-

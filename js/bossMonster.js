@@ -11,14 +11,14 @@ var BossMonster = new Phaser.Class({
         
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
-        this.eMonsterPower = 10;
+        this.eMonsterPower = 20;
         var slowed = 0;
     },
 
     startOnPath: function ()
     {
         this.follower.t = 0;
-        this.hp = 90000;
+        this.hp = 9000;
         this.slowed = 0;
         path.getPoint(this.follower.t, this.follower.vec);
         
@@ -29,11 +29,11 @@ var BossMonster = new Phaser.Class({
         this.hp -= damage;           
         //this.follower.t.velocity.normalize().scale(1/6000000);
 
-        if (this.hp <= 30 && this.hp >= 20)
+        if (this.hp <= 7000 && this.hp >= 5000)
         {
             this.tint = 0xff8f8f;
         }
-        else if (this.hp < 20 && this.hp >= 10)
+        else if (this.hp < 5000 && this.hp >= 0)
         {
             this.tint = 0xfc2b2b;
         }
@@ -42,7 +42,7 @@ var BossMonster = new Phaser.Class({
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
             this.destroy();   
-            currentGold = currentGold + 50;	
+            currentGold = currentGold + 150;	
             this.clearTint();			
         }
     },
@@ -53,7 +53,7 @@ var BossMonster = new Phaser.Class({
         this.slowed = 100 * FrostTowerUpgrade;
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
-            currentGold = currentGold + 500;
+            currentGold = currentGold + 150;
             this.destroy();        
         }
     },
@@ -62,7 +62,7 @@ var BossMonster = new Phaser.Class({
         this.hp -= bombDamage;
         addBombExplosion(this.follower.vec.x, this.follower.vec.y)
         if(this.hp <= 0) {
-            currentGold = currentGold + 50;
+            currentGold = currentGold + 150;
             this.destroy();        
         }
     },
@@ -71,14 +71,14 @@ var BossMonster = new Phaser.Class({
         this.hp -= bombDamageExplosion;
 
         if(this.hp <= 0) {
-            currentGold = currentGold + 50;
+            currentGold = currentGold + 150;
             this.destroy();        
         }
     },
     update: function (time, delta)
     {
         if(this.slowed <= 0){
-        this.follower.t += ENEMY_SPEED * delta;
+        this.follower.t += (1/20000) * delta;
         this.slowed = 0;
         }
         else{
