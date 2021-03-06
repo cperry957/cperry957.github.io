@@ -12,7 +12,7 @@
             map[i][j] = 1;            
         },
 		fire: function() {
-            var enemy = getEnemy(this.x, this.y, 200);
+            var enemy = getEnemyIce(this.x, this.y, 200);
             if(enemy) {
                 var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
                 addIceBullet(this.x, this.y, angle);
@@ -23,7 +23,7 @@
         {
             if(time > this.nextTic) {
 				this.fire();
-                this.nextTic = time + 1000;
+                this.nextTic = time + 1000 - (FrostTowerUpgrade * 50);
             }
         }
 });
@@ -93,7 +93,7 @@
    return false;
 } */
 
-function getEnemy(x, y, distance) {
+function getEnemyIce(x, y, distance) {
 
     let arr = []; 
 
@@ -102,7 +102,7 @@ function getEnemy(x, y, distance) {
     var enemyUnits3 = hMonster.getChildren();
     var enemyUnits4 = bMonster.getChildren();
 
-
+    
     for(var i = 0; i < enemyUnits.length; i++) {       
         if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
         {
@@ -130,6 +130,15 @@ function getEnemy(x, y, distance) {
 
     if (arr.length != 0 && arr[0].active)
     {
+
+        for (var y = 0; y < arr.length; y++)
+        {
+            if (!arr[y].slowed)
+            {
+                //console.log(arr[y]);
+                return arr[y];
+            }
+        }
         return arr[0];
     }
 

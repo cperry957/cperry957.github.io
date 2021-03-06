@@ -12,7 +12,7 @@
             map[i][j] = 1;            
         },
 		fire: function() {
-            var enemy = getEnemy(this.x, this.y, 200 * BombTowerUpgrade);
+            var enemy = getEnemy(this.x, this.y, 100);
             if(enemy) {
                 var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
                 addBombBullet(this.x, this.y, angle);
