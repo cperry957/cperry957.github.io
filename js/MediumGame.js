@@ -54,7 +54,7 @@ class MediumGame extends Phaser.Scene{
                 this.load.image('dirtTiles', 'assets/ArtWork/Maps/dirt.png');
                 this.load.image('castleTiles', 'assets/ArtWork/Maps/castle.png');
                 this.load.image('dirtPathTiles', 'assets/ArtWork/Maps/dirtPath.png');
-                this.load.tilemapTiledJSON('mediumMap', 'assets/ArtWork/Maps/mediumMap.json'); 
+                this.load.tilemapTiledJSON('mediumMap', 'assets/ArtWork/Maps/MediumMap.json'); 
 
                 this.load.image('musicOn', 'assets/musicOn.png');
                 this.load.image('musicOff', 'assets/musicOff.png');
