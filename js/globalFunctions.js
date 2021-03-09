@@ -12,7 +12,7 @@
 	var BULLET_DAMAGE = 35;
 	var ICE_BULLET_DAMAGE = 5;
 	var BOMB_BULLET_DAMAGE = 1;
-	var BOMB_BULLET_DAMAGE_EXPLOSION = 3;
+	var BOMB_BULLET_DAMAGE_EXPLOSION = 1;
 	var ArrowTowerUpgrade;
 	var BombTowerUpgrade;
 	var FrostTowerUpgrade;
