@@ -1,3 +1,4 @@
+// Hard monster Phaser Class 
 var HardMonster = new Phaser.Class({
 
     Extends: Phaser.GameObjects.Image,
@@ -11,38 +12,28 @@ var HardMonster = new Phaser.Class({
         
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.hp = 0;
-        this.eMonsterPower = 15;
+        this.hMonsterPower = 15;
         var slowed = 0;
     },
-
+	//function set the path the monster will follow
     startOnPath: function ()
     {
         this.follower.t = 0;
-        this.hp = 1000;
+        this.hp = 500;
         this.slowed = 0;
         path.getPoint(this.follower.t, this.follower.vec);
         
         this.setPosition(this.follower.vec.x, this.follower.vec.y);            
     },
     
+	// functions for receiveing Damage from the differnt tower
     receiveDamage: function(damage) {
         this.hp -= damage;           
-        //this.follower.t.velocity.normalize().scale(1/6000000);
-
-        if (this.hp <= 700 && this.hp >= 500)
-        {
-            this.tint = 0xff8f8f;
-        }
-        else if (this.hp < 500 && this.hp >= 0)
-        {
-            this.tint = 0xfc2b2b;
-        }
-
 
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
             this.destroy();   
-            currentGold = currentGold + 50;	
+           increasegold(3);
             this.clearTint();			
         }
     },
@@ -53,7 +44,7 @@ var HardMonster = new Phaser.Class({
         this.slowed = 100 * FrostTowerUpgrade;
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
-            currentGold = currentGold + 50;
+                increasegold(3);	
             this.destroy();        
         }
     },
@@ -62,7 +53,7 @@ var HardMonster = new Phaser.Class({
         this.hp -= bombDamage;
         addBombExplosion(this.follower.vec.x, this.follower.vec.y)
         if(this.hp <= 0) {
-            currentGold = currentGold + 50;
+            increasegold(3);
             this.destroy();        
         }
     },
@@ -71,12 +62,26 @@ var HardMonster = new Phaser.Class({
         this.hp -= bombDamageExplosion;
 
         if(this.hp <= 0) {
-            currentGold = currentGold + 50;
+            increasegold(3);
             this.destroy();        
         }
     },
     update: function (time, delta)
     {
+		if(lostGameEnemyCheck == 1)
+        {
+            this.destroy(); 
+        };
+		
+		if (this.hp <= 700 && this.hp >= 500)
+        {
+            this.tint = 0xff8f8f;
+        }
+        else if (this.hp < 500 && this.hp >= 0)
+        {
+            this.tint = 0xfc2b2b;
+        }
+		
         if(this.slowed <= 0){
         this.follower.t += (1/15000) * delta;
         this.slowed = 0;
@@ -93,7 +98,7 @@ var HardMonster = new Phaser.Class({
         {
         this.setActive(false);
         this.setVisible(false);
-        this.scene.takeDamage(this.eMonsterPower);
+        this.scene.takeDamage(this.hMonsterPower);
         this.destroy();
         }
 

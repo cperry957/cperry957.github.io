@@ -1,3 +1,5 @@
+// Arrow tower Turret Phaser Scene
+//all internal function for the tower to preform basic function 
   var Arrow = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize:
@@ -28,6 +30,9 @@
         }
 });
 
+// the Arrow projectile Phaser Scene
+//addes in the Arrow projectile to the map and sets it in the 
+//derection of the enemy targeted
   var Bullet = new Phaser.Class({
 
         Extends: Phaser.GameObjects.Image,
@@ -77,6 +82,7 @@
 
     });
 	
+	// helper function to add the Bullet to the Map 
   function addBullet(x, y, angle) {
     var bullet = bullets.get();
     if (bullet)
@@ -85,6 +91,7 @@
     }
 }
 
+// helper function to get the enemys location and distance from tower
 function getEnemy(x, y, distance) {
     let arr = []; 
 

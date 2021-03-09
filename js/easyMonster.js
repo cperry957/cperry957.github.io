@@ -1,4 +1,5 @@
-  var EasyMonster = new Phaser.Class({
+ // Eazy monster Phaser Class 
+ var EasyMonster = new Phaser.Class({
 
         Extends: Phaser.GameObjects.Image,
 
@@ -14,7 +15,7 @@
 			this.eMonsterPower = 5;
 			var slowed = 0;
         },
-
+	//function set the path the monster will follow
         startOnPath: function ()
         {
             this.follower.t = 0;
@@ -25,24 +26,14 @@
             this.setPosition(this.follower.vec.x, this.follower.vec.y);            
         },
 		
+	// functions for receiveing Damage from the differnt tower
         receiveDamage: function(damage) {
-            this.hp -= damage;           
-			//this.follower.t.velocity.normalize().scale(1/6000000);
-
-            if (this.hp <= 80 && this.hp >= 50)
-            {
-                this.tint = 0xff8f8f;
-            }
-            else if (this.hp < 50 && this.hp >= 0)
-            {
-                this.tint = 0xfc2b2b;
-            }
-
+            this.hp -= damage;        
 
             // if hp drops below 0 we deactivate this enemy
             if(this.hp <= 0) {
 			    this.destroy();   
-				currentGold = currentGold + 10;	
+				increasegold(1);
                 this.clearTint();			
             }
         },
@@ -53,7 +44,7 @@
 			this.slowed = 100 * FrostTowerUpgrade;
             // if hp drops below 0 we deactivate this enemy
             if(this.hp <= 0) {
-				currentGold = currentGold + 10;
+				increasegold(1);
                 this.destroy();        
             }
         },
@@ -62,7 +53,7 @@
             this.hp -= bombDamage;
 			addBombExplosion(this.follower.vec.x, this.follower.vec.y)
             if(this.hp <= 0) {
-				currentGold = currentGold + 10;
+				increasegold(1);
                 this.destroy();        
             }
         },
@@ -71,12 +62,26 @@
             this.hp -= bombDamageExplosion;
 
             if(this.hp <= 0) {
-				currentGold = currentGold + 10;
+				increasegold(1);
                 this.destroy();        
             }
         },
         update: function (time, delta)
         {
+            if(lostGameEnemyCheck == 1)
+            {
+                this.destroy(); 
+            };
+
+            if (this.hp <= 80 && this.hp >= 50)
+            {
+                this.tint = 0xff8f8f;
+            }
+            else if (this.hp < 50 && this.hp >= 0)
+            {
+                this.tint = 0xfc2b2b;
+            }
+			
 			if(this.slowed <= 0){
             this.follower.t += (1/20000) * delta;
 			this.slowed = 0;

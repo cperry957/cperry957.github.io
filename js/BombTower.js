@@ -1,4 +1,6 @@
-  var Bomb = new Phaser.Class({
+// Bomb tower Turret Phaser Scene
+//all internal function for the tower to preform basic function 
+   var Bomb = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize:
         function Bomb (scene)
@@ -28,7 +30,10 @@
         }
 });
 
-  var BombBomb = new Phaser.Class({
+// the bomb projectile Phaser Scene
+//addes in the bomb projectile to the map and sets it in the 
+//derection of the enemy targeted
+   var BombBomb = new Phaser.Class({
 
         Extends: Phaser.GameObjects.Image,
 
@@ -76,8 +81,10 @@
         }
 
 });
-
-  var BombExplosion = new Phaser.Class({
+ // the Explosion Phaser Scene 
+ //addes the bomb Explosion to the map so it can damage the ememy at 
+ // the bombs colitions location
+   var BombExplosion = new Phaser.Class({
 
         Extends: Phaser.GameObjects.Image,
 
@@ -116,6 +123,7 @@
 
 });
 
+// helper function to add the bomb to the Map 
   function addBombBullet(x, y, angle) {
     var BombBomb = BombBombs.get();
 	//console.log("bomb fire called");
@@ -124,7 +132,9 @@
         BombBomb.firebomb(x, y, angle);
     }
 }
-function getEnemy(x, y, distance) {
+
+// helper function to get the enemys location and distance from tower
+  function getEnemy(x, y, distance) {
     let arr = []; 
 
     var enemyUnits = eMonster.getChildren();

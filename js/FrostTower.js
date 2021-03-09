@@ -1,3 +1,5 @@
+// Frost tower Turret Phaser Scene
+//all internal function for the tower to preform basic function 
   var Frost = new Phaser.Class({
         Extends: Phaser.GameObjects.Image,
         initialize:
@@ -28,6 +30,9 @@
         }
 });
 
+// the Frost projectile Phaser Scene
+//addes in the Frost projectile to the map and sets it in the 
+//derection of the enemy targeted
   var iceBullet = new Phaser.Class({
 
         Extends: Phaser.GameObjects.Image,
@@ -75,6 +80,7 @@
 
 });
 
+// helper function to add the IceBullet to the Map 
   function addIceBullet(x, y, angle) {
     var iceBullet = iceBullets.get();
     if (iceBullet)
@@ -83,16 +89,7 @@
     }
 }
 
-/*
-  function getEnemy(x, y, distance) {
-    var enemyUnits = eMonster.getChildren();
-    for(var i = 0; i < enemyUnits.length; i++) {       
-        if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) < distance)
-            return enemyUnits[i];
-   }
-   return false;
-} */
-
+// helper function to get the enemys location and distance from tower
 function getEnemyIce(x, y, distance) {
 
     let arr = []; 

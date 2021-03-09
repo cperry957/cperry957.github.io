@@ -3,7 +3,7 @@ var config= {
     width: 800,
     height: 600, 
     backgroundColor: 0x000000,
-    scene: [StartScreen, DifficultyScreen, newOrLoadScreen, LoadScreen, EasyGame, MediumGame, HardGame],
+    scene: [StartScreen, DifficultyScreen, NewAndInstructions, HowToPlay, EasyGame, MediumGame, HardGame],
     physics: {
         default: 'arcade',
         arcade: {
