@@ -90,7 +90,7 @@
 			var Bomb = BombTower.get();
 			if (Bomb)
 			{
-				changegold(300 + (bombtowersplased * 50));
+				changegold(500 + (bombtowersplased * 50));
 				Bomb.setActive(true);
 				Bomb.setVisible(true);
 				Bomb.place(i, j);
@@ -102,7 +102,7 @@
 			var Frost = FrostTower.get();
 			if (Frost)
 			{
-				changegold(250 + (frosttowersplased * 50));
+				changegold(300 + (frosttowersplased * 50));
 				Frost.setActive(true);
 				Frost.setVisible(true);
 				Frost.place(i, j);
