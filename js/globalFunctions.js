@@ -86,7 +86,7 @@
 				arrowtowersplased++;
 			} 
 		}
-		 if(currentselectedTower() == 2 && currentGold >= 300 + (bombtowersplased * 50)){		
+		 if(currentselectedTower() == 2 && currentGold >= 500 + (bombtowersplased * 50)){		
 			var Bomb = BombTower.get();
 			if (Bomb)
 			{
