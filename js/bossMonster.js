@@ -1,3 +1,24 @@
+/*
+* Author: Cole Perry, Sarkis Grigorian
+* Class: CS 467 - Capstone
+* Due Date: 3/10/2021
+* File: bossMonster.js
+* Description: The following file contains information for the boss monster
+* Citations:
+* https://phaser.io/tutorials/making-your-first-phaser-3-game/part1
+* https://phaser.io/examples/v3
+* https://photonstorm.github.io/phaser3-docs/Phaser.Curves.Path.html
+* https://www.youtube.com/watch?v=frRWKxB9Hm0
+* https://www.youtube.com/watch?v=7cpZ5Y7THmo
+* https://www.youtube.com/watch?v=QXxmSbfR2aY
+* https://www.youtube.com/watch?v=55DzXMkCfVA
+* https://stackoverflow.com/questions/30693021/chrome-developer-tools-shows-favicon-404-error-in-brackets-livepreview
+* https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/ 
+* https://academy.zenva.com/course/build-a-tower-defense-game-with-phaser-3/
+* https://phaser.discourse.group/t/setinteractive-hitareacallback-usage-help/851
+* https://phasergames.com/extend-a-sprite-in-phaser-3/
+*/
+
 var BossMonster = new Phaser.Class({
 
     Extends: Phaser.GameObjects.Image,
@@ -51,6 +72,7 @@ var BossMonster = new Phaser.Class({
 
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
+            playHitMarker();
             this.destroy();   
             currentGold = currentGold + 150;	
             this.clearTint();			
@@ -63,6 +85,7 @@ var BossMonster = new Phaser.Class({
         this.slowed = 100 * FrostTowerUpgrade;
         // if hp drops below 0 we deactivate this enemy
         if(this.hp <= 0) {
+            playHitMarker();
             currentGold = currentGold + 150;
             this.destroy();        
         }
@@ -72,6 +95,7 @@ var BossMonster = new Phaser.Class({
         this.hp -= bombDamage;
         addBombExplosion(this.follower.vec.x, this.follower.vec.y)
         if(this.hp <= 0) {
+            playHitMarker();
             currentGold = currentGold + 150;
             this.destroy();        
         }
@@ -81,6 +105,7 @@ var BossMonster = new Phaser.Class({
         this.hp -= bombDamageExplosion;
 
         if(this.hp <= 0) {
+            playHitMarker();
             currentGold = currentGold + 150;
             this.destroy();        
         }

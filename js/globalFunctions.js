@@ -1,3 +1,24 @@
+/*
+* Author: Cole Perry, Sarkis Grigorian
+* Class: CS 467 - Capstone
+* Due Date: 3/10/2021
+* File: globalFunctions.js
+* Description: The following file contains information for the global functions accessed by multiple files during gameplay
+* Citations:
+* https://phaser.io/tutorials/making-your-first-phaser-3-game/part1
+* https://phaser.io/examples/v3
+* https://photonstorm.github.io/phaser3-docs/Phaser.Curves.Path.html
+* https://www.youtube.com/watch?v=frRWKxB9Hm0
+* https://www.youtube.com/watch?v=7cpZ5Y7THmo
+* https://www.youtube.com/watch?v=QXxmSbfR2aY
+* https://www.youtube.com/watch?v=55DzXMkCfVA
+* https://stackoverflow.com/questions/30693021/chrome-developer-tools-shows-favicon-404-error-in-brackets-livepreview
+* https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/ 
+* https://academy.zenva.com/course/build-a-tower-defense-game-with-phaser-3/
+* https://phaser.discourse.group/t/setinteractive-hitareacallback-usage-help/851
+* https://phasergames.com/extend-a-sprite-in-phaser-3/
+*/
+
 //this file contains all of the global function that are used throw out
 // the differnt game states as well as all of our global variables that are
 // shared between differnt classes.
@@ -44,6 +65,7 @@
 	var lostGameEnemyCheck; 
 	var wonGameCheck; 
 	var finalSpawned; 
+	var hitMarkerSound; 
 	
 
 
@@ -92,6 +114,11 @@
 		}		
 }
 
+//function to play hit marker sound when an enemy dies
+	function playHitMarker()
+	{
+		hitMarkerSound.play();
+	}
 
 //function to reduse the current gold by a amount sent
 	function changegold(goldreduction){

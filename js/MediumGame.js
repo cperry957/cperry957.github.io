@@ -5,6 +5,25 @@
 * File: MediumGame.js
 * Description: The following file contains information for the medium map/medium game mode of the HTML 5 tower
 * defense game. 
+* Music Citations:
+* https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6
+* "A Bit Of Hope"
+* Author: David Fesliyan
+* Citations:
+* https://phaser.io/tutorials/making-your-first-phaser-3-game/part1
+* https://phaser.io/examples/v3
+* https://photonstorm.github.io/phaser3-docs/Phaser.Curves.Path.html
+* https://www.youtube.com/watch?v=frRWKxB9Hm0
+* https://www.youtube.com/watch?v=7cpZ5Y7THmo
+* https://www.youtube.com/watch?v=QXxmSbfR2aY
+* https://www.youtube.com/watch?v=55DzXMkCfVA
+* https://stackoverflow.com/questions/30693021/chrome-developer-tools-shows-favicon-404-error-in-brackets-livepreview
+* https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/ 
+* https://academy.zenva.com/course/build-a-tower-defense-game-with-phaser-3/
+* https://phaser.discourse.group/t/setinteractive-hitareacallback-usage-help/851
+* https://phasergames.com/extend-a-sprite-in-phaser-3/
+* https://pipoya.itch.io/pipoya-rpg-tileset-32x32
+* https://finalbossblues.itch.io/dark-dimension-tileset
 */
 
 //medium game phaser scene 
@@ -58,7 +77,6 @@ class MediumGame extends Phaser.Scene{
 
     //preloads all images and music used in medium game
     preload() {    
-
                 this.load.audio('mouseClick', 'assets/sounds/mouseClick.mp3');
                 this.load.audio('backgroundMusicMedium', 'assets/sounds/backgroundMusicMedium.mp3');
                 this.load.image('arrowTowerInfo', 'assets/ArrowTowerSign.png'); 
@@ -163,7 +181,7 @@ class MediumGame extends Phaser.Scene{
         this.gameWon = 0; 
         this.lostGame = 0; 
         this.castleHealth = 100;
-		currentGold = 5500;
+		currentGold = 6000;
 
         //sets castle fires when castle is damaged 
         this.fire1 = false;
@@ -670,7 +688,7 @@ class MediumGame extends Phaser.Scene{
         if (this.currentWave == 1)
         {
             this.currentWaveImage = this.add.image(470, 30, 'one').setScale(1.4);
-            this.addMonsters(40,0,0,0); 
+            this.addMonsters(60,0,0,0); 
         }
         else if (this.currentWave == 2)
         {

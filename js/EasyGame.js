@@ -5,6 +5,25 @@
 * File: EasyGame.js
 * Description: The following file contains information for the easy map/easy game mode of the HTML 5 tower
 * defense game. 
+* Music Citations:
+* https://www.fesliyanstudios.com/royalty-free-music/downloads-c/8-bit-music/6
+* "8 Bit Surf"
+* Author: David Renda
+* Citations:
+* https://phaser.io/tutorials/making-your-first-phaser-3-game/part1
+* https://phaser.io/examples/v3
+* https://photonstorm.github.io/phaser3-docs/Phaser.Curves.Path.html
+* https://www.youtube.com/watch?v=frRWKxB9Hm0
+* https://www.youtube.com/watch?v=7cpZ5Y7THmo
+* https://www.youtube.com/watch?v=QXxmSbfR2aY
+* https://www.youtube.com/watch?v=55DzXMkCfVA
+* https://stackoverflow.com/questions/30693021/chrome-developer-tools-shows-favicon-404-error-in-brackets-livepreview
+* https://gamedevacademy.org/how-to-make-tower-defense-game-with-phaser-3/ 
+* https://academy.zenva.com/course/build-a-tower-defense-game-with-phaser-3/
+* https://phaser.discourse.group/t/setinteractive-hitareacallback-usage-help/851
+* https://phasergames.com/extend-a-sprite-in-phaser-3/
+* https://pipoya.itch.io/pipoya-rpg-tileset-32x32
+* https://finalbossblues.itch.io/dark-dimension-tileset
 */
 
 //easy game phaser scene 
